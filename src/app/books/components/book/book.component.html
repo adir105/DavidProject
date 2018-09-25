@@ -1,0 +1,79 @@
+<div class="listbooks" *ngFor="let book of books; let i = index">
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">{{ book.Title | upperCaseFirstLetter }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ book.AuthorName }}</h6>
+      <p class="card-text">{{ book.PublishedDate }}</p>
+      <button class="btn btn-danger card-link" data-toggle="modal" data-target="#myDeleteModal" (click)="saveIndex(i)">Delete</button>
+      <button class="btn btn-info card-link" data-toggle="modal" data-target="#myEditeModal" (click)="saveEditIndex(i, book)">Edit</button>   
+    </div>
+  </div>
+</div>
+
+<div>
+<!--Delete Modal -->
+<div id="myDeleteModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Delete Book</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" (click)="deleteBook()">Yes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+</div>
+<div>
+  <!--Edit Modal -->
+  <div class="modal fade" id="myEditeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" #editModal>
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Book</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="editForm">
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Title:</label>
+                <input  type="text" class="form-control" id="recipient-name" placeholder="{{ currentBook.Title }}" #title formControlName="title">
+                <div>
+                  <label *ngIf="title.invalid" for="text" >Title Invalid.</label>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">Authors:</label>
+                  <input type="text" class="form-control" id="recipient-name" placeholder="{{ currentBook.AuthorName }}" #authors formControlName="authors">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Date Published:</label>
+                    <input type="text" class="form-control" id="recipient-name" placeholder="{{ currentBook.PublishedDate }}" #datePublished formControlName="datePublished">
+                  </div>
+                  <div>
+                    </div>
+                    <label class="errorLabel" *ngIf="editForm.invalid" for="text" >All fields required, Date must be like '19-02-1990'.</label> <br>
+                    <label class="errorLabel" *ngIf="isTitleAlreadyExist" for="text" >Same book name is already exist.</label> <br>
+                  <div>
+                </div> 
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="editBook()">Edit Book</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
